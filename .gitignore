@@ -1,0 +1,15 @@
+# IDE 配置
+.idea/
+.trae/
+
+# 虚拟环境
+venv/
+
+# 编译/缓存
+__pycache__/
+*.pyc
+*.pyo
+
+# 系统垃圾
+.DS_Store
+Thumbs.db
