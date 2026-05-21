@@ -13,3 +13,19 @@ __pycache__/
 # 系统垃圾
 .DS_Store
 Thumbs.db
+
+# C/C++ 编译产物
+*.o
+*.obj
+*.exe
+*.out
+*.so
+*.dll
+*.a
+*.lib
+
+# CMake 构建目录
+build/
+cmake-build-*/
+CMakeCache.txt
+CMakeFiles/
