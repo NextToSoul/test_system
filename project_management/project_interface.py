@@ -3,6 +3,7 @@ import sys
 from re import search
 
 import openpyxl
+import pandas as pd
 #from tkinter.ttk import Label
 
 from PySide6.QtCore import QDate, Qt
@@ -51,6 +52,9 @@ class ProjectInterface(QWidget):
         self.addButton=PushButton('新增',self)
         setCustomStyleSheet(self.addButton,ADD_BUTTON_STYLE,ADD_BUTTON_STYLE)
         self.addButton.clicked.connect(self.add_item)#设置关联事件
+        '''self.config_button=PushButton('导入配置',self)
+        setCustomStyleSheet(self.config_button,ADD_BUTTON_STYLE,ADD_BUTTON_STYLE)
+        self.config_button.clicked.connect(self.import_config_from_excel)'''
         self.comboBox=ComboBox(self)
         self.comboBox.setPlaceholderText('选择工质')
         self.comboBox.addItems(['所有工质','氪气','氙气'])
@@ -193,8 +197,20 @@ class ProjectInterface(QWidget):
             #将获取的信息写入数据库
             try:
                 with itemDB() as db:
-                    db.add_item(project_info)
-                self.filter_conditions()
+                    #新增项目数据，并获取刚插入的自增项目ID
+                    project_id=db.add_item(project_info)
+                    #生成项目专属表名
+                    condition_table=f'proj_{project_id}_condition'
+                    record_table=f'proj_{project_id}_record'
+                    grounding_table=f'proj_{project_id}_grounding'
+                    # 复制模板表结构
+                    db.copy_table('ignition_condition',condition_table)
+                    db.copy_table('ignition_record',record_table)
+                    db.copy_table('grounding_record',grounding_table)
+                    #将专属表名更新到ignition_item表中
+                    db.update_exclusive_table(condition_table,record_table,grounding_table,project_id)
+
+                self.filter_conditions() #获取筛选条件
                 self.load_data(self.search_text,self.combo_text,self.date_str)
                 self.populate_table()
                 InfoBar.success(title='数据添加成功',content=f"{project_info['project_name']}添加成功",duration=3000,parent=self)
@@ -662,6 +678,9 @@ class ProjectInterface(QWidget):
         # print(date_str)
         self.search_text = self.searchInput.text().strip()
         self.combo_text = self.comboBox.currentText()
+
+
+
 
 if __name__=="__main__":
     app=QApplication(sys.argv)

@@ -121,3 +121,36 @@ class IgnitionConditionDB(DatabaseManage):
         '''
         params=(condition_id,)
         self.execute_query(query,params)
+
+    # 从数据库中读取表结构
+    def get_table_colums(self, table_name):
+        query=f"DESCRIBE {table_name}"
+        rows=self.fetch_query(query)
+        #print(rows)
+        colums=[]
+        for row in rows:
+            field_name=row['Field']
+            field_type=row['Type'].lower()
+
+            if field_name in ['project_id','condition_id']:
+                continue
+            #自动识别类型
+            if 'int' in field_type:
+                py_type='int'
+            elif 'float' in field_type or 'double' in field_type:
+                py_type='float'
+            elif 'time' in field_type:
+                py_type='time'
+            elif 'date' in field_type:
+                py_type='date'
+            else:
+                py_type='string'
+            colums.append({'field':field_name,'type':py_type})
+        #print(colums)
+
+
+
+
+if __name__=='__main__':
+    with IgnitionConditionDB() as db:
+        db.get_table_colums('ignition_condition')

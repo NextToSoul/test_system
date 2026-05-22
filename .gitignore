@@ -4,7 +4,7 @@
 .vscode/
 
 # 虚拟环境
-venv/
+.venv/
 
 # 编译/缓存
 __pycache__/

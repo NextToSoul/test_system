@@ -11,7 +11,7 @@
  Target Server Version : 80044 (8.0.44)
  File Encoding         : 65001
 
- Date: 22/05/2026 00:15:57
+ Date: 22/05/2026 17:39:00
 */
 
 SET NAMES utf8mb4;
@@ -153,9 +153,9 @@ CREATE TABLE `ignition_item`  (
   `sw_version` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `ignition_date` date NOT NULL,
   `ignition_location` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `condition_table` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `record_table` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `grounding_table` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `condition_table` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `record_table` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `grounding_table` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `project_status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'draft',
@@ -174,20 +174,6 @@ CREATE TABLE `ignition_item`  (
 -- ----------------------------
 INSERT INTO `ignition_item` VALUES (1, '28V自研电源点火测试', 8, 7, 3, '氪气', '1', '2026-05-12', '昌平2号舱', '', '', '', '2026-05-19 17:25:00', '2026-05-19 17:25:00', 'draft', NULL);
 INSERT INTO `ignition_item` VALUES (2, '28V自研PPCU测试', 8, 7, 3, '氙气', '2020-0-0-0', '2026-05-13', '昌平2号仓', '', '', '', '2026-05-19 17:25:00', '2026-05-19 17:25:00', 'draft', NULL);
-
--- ----------------------------
--- Table structure for ignition_mode
--- ----------------------------
-DROP TABLE IF EXISTS `ignition_mode`;
-CREATE TABLE `ignition_mode`  (
-  `ignition_mode_id` int NOT NULL,
-  `ignition_mode` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  PRIMARY KEY (`ignition_mode_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of ignition_mode
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for ignition_modes

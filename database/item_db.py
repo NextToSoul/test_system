@@ -171,6 +171,28 @@ class itemDB(DatabaseManage):
             item_info['ignition_location']
         )
         self.execute_query(query,params)
+        return self.get_last_insert_id()#返回当前创建的自增id
+
+    #获取最后插入的自增ID
+    def get_last_insert_id(self):
+        if self.connection:
+            return self.connection.insert_id()
+        return None
+
+    #复制表结构工具函数
+    def copy_table(self,source_table,target_table):
+        query=f'CREATE TABLE IF NOT EXISTS {target_table} LIKE {source_table}'
+        self.execute_query(query)
+
+    #更新ignition_item表中condition_table, record_table, grounding_table三个字段的名称
+    def update_exclusive_table(self,condition_table,record_table,grounding_table,project_id):
+        query='''
+        UPDATE ignition_item 
+        SET condition_table=%s,record_table=%s,grounding_table=%s 
+        WHERE project_id=%s
+        '''
+        params=(condition_table,record_table,grounding_table,project_id)
+        self.execute_query(query,params)
 
     #添加项目信息（通过导入excel方式添加）
     def add_excel_item(self,item_info):
